@@ -57,13 +57,10 @@ class Procedure {
                 <a class="btn-floating waves-effect waves-light red remove-card"><i class="material-icons">close</i></a>
               </div>  
           </div>    
-
             <ol class="collection ${this.id}">
             </ol> 
-
             <div class="card-content titration-color" style="background: linear-gradient(to right, ${this.color1}, ${this.color2})">
                         </div>
-
             <div class="card-content">
             <form class="calc-form">
               <!--INPUT 1 ENTER A-->
@@ -107,7 +104,7 @@ class Procedure {
   addProcedureList() {
     let stepId = this.id;
     this.procedureList.forEach(function(tasks, index){
-          let ol = document.querySelector(`.enHypophosphite`);
+          let ol = document.querySelector(`ol.${stepId}`);
           const step = document.createElement('li'); 
           step.className = "collection-item";
           step.appendChild(document.createTextNode(tasks));
@@ -123,12 +120,11 @@ class Procedure {
 }
 // Insert card to HTML
 
-document.querySelector('.new-card-request').addEventListener('click', addNewCard);
+document.body.addEventListener('click', addNewCard);
 
 function addNewCard(e){
-  console.log(e.target.parentElement.id);
-  let targetID = e.target.parentElement.id;
-  const targetID = new Procedure(
+  if(e.target.parentElement.classList.contains('enHypophosphite')){
+  const enHypophosphite = new Procedure(
     /*ID*/'enHypophosphite',
     /*title*/'Electroless Nickel - Hypophosphite Analysis', 
     /*procedure list*/ 
@@ -151,10 +147,34 @@ function addNewCard(e){
     /*resultsMetric*/ 'calc 2 currently stringt',
     /* min Metric*/ 19,
     /* max Metric*/ 25);  
-
-enHypophosphite.newProcedureCard();
-enHypophosphite.addProcedureList();
-//console.log(enHypophosphite.procedureList.length);
+    enHypophosphite.newProcedureCard();
+    enHypophosphite.addProcedureList();
+  }
+  if(e.target.parentElement.classList.contains('enNickel')){
+    const enNickel = new Procedure(
+      /*ID*/'enNickel',
+      /*title*/'Electroless Nickel - Metal Analysis', 
+      /*procedure list*/ 
+      ['Pippet 5ml operating solution into 250ml Erlenmeyer',
+      'Add 10mL Ammonium Hydroxide (AG Grade)',
+      'Add a pinch Murexide to pale straw color',
+      'Titrate with 0575M EDTA to blue-purple endpoint',
+      'Record mL 0.0575M EDTA titrated as "A"'
+      ],
+      /*color1*/ 'orange', 
+      /*color 2*/'#2A00BB',
+      /*inputA*/"mL 0.0575M EDTA titrated", 
+      /*inputB*/'Not Required', 
+      /*inputBState*/ null, 
+      /*resultsImperial*/ 'calc 1 currently string', 
+      /* min Imperial*/ 0.7,
+      /* max Imperial*/ 0.8,
+      /*resultsMetric*/ 'calc 2 currently stringt',
+      /* min Metric*/ 5.25,
+      /* max Metric*/ 6);  
+      enNickel.newProcedureCard();
+      enNickel.addProcedureList();
+    }
 }
 
 //Remove card from HTML 
