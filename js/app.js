@@ -24,141 +24,137 @@ function launchAddForm(e){
 
 //List of Procedures - Eventually this will be stored in a database
 
-function Procedure(title,procedureList,color1,color2,inputA,inputB,inputBState,resultsImperial,minImpertial, maxImperial, resultsMetric, minMetric, maxMetric){
-  this.name = title;
-  this.procedureList = procedureList;
-  this.color1 = color1;
-  this.color2 = color2;
-  this.inputA = inputA;
-  this.inputB = inputB;
-  this.inputBState = inputBState;
-  this.resultsImperial = resultsImperial;
-  this.minImpertial = minImpertial;
-  this.maxImperial = maxImperial;
-  this.resultsMetric = resultsMetric;
-  this.minImpertial = minMetric;
-  this.maxMetric = maxMetric;
+class Procedure { 
+    constructor(id, title ,procedureList,color1,color2,inputA,inputB,inputBState,resultsImperial,minImpertial, maxImperial, resultsMetric, minMetric, maxMetric){
+        this.id = id;
+        this.name = title;
+        this.procedureList = procedureList;
+        this.color1 = color1;
+        this.color2 = color2;
+        this.inputA = inputA;
+        this.inputB = inputB;
+        this.inputBState = inputBState;
+        this.resultsImperial = resultsImperial;
+        this.minImpertial = minImpertial;
+        this.maxImperial = maxImperial;
+        this.resultsMetric = resultsMetric;
+        this.minMetric = minMetric;
+        this.maxMetric = maxMetric;
+      }
+    
+       
+    newProcedureCard(){
+
+          const newCard = document.createElement('div');
+          newCard.className = 'card larger main-card';
+          newCard.style = 'margin-top: 3em';
+          newCard.innerHTML = `<div class="card-content">
+          <div class="row">
+              <div class="col s10">  
+              <span class="card-title">${this.name}</span>
+              </div>
+              <div class="col s2 right-align">
+                <a class="btn-floating waves-effect waves-light red remove-card"><i class="material-icons">close</i></a>
+              </div>  
+          </div>    
+
+            <ol class="collection ${this.id}">
+            </ol> 
+
+            <div class="card-content titration-color" style="background: linear-gradient(to right, ${this.color1}, ${this.color2})">
+                        </div>
+
+            <div class="card-content">
+            <form class="calc-form">
+              <!--INPUT 1 ENTER A-->
+              <div class="row">
+                  <div class="input-field col s12 m 6 l6 input-ab">
+                      <i class="prefix">A</i>
+                      <input class="input-a" type="number">
+                      <label for="icon_prefix">${this.inputA}</label>
+                    </div>
+                <!--INPUT 2 ENTER B-->
+                  <div class="input-field col s12 m6 l6 input-ab">
+                        <i class="prefix">B</i>
+                        <input class="input-b" type="number" disabled>
+                        <label for="icon_prefix">${this.inputB}</label>
+                  </div>
+              </div>
+                <!--INPUT 2 ANSWER IMPERIAL-->
+                      <div class="row answer-imperial-row">
+                          <div class="col s12"> A x 0.09 = <div class="input-field inline"><input type="number" class="answer-imperial center-align" style="width: 4em" disabled></div>oz/gal of Nickel Metal.  Min: <div class="input-field inline"><input type="number" placeholder="${this.minImpertial}" class="min-imperial center-align" style="width: 4em"disabled></div> Max: <div class="input-field inline">
+                              <input type="number" placeholder="${this.maxImperial}" class="max-imperial center-align" style="width: 4em" disabled></div></div>
+                        
+                      </div>
+                <!--INPUT 2 ANSWER METRIC-->
+                      <div class="row" class="answer-metric-row">
+                          <div class="col s12">A x 0.675 = 
+                            <div class="input-field inline">
+                              
+                              <input type="number" class="center-align validate answer-metric" style="width: 4em" disabled>
+                            </div>g/L of Nickel Metal.
+                          Min: <div class="input-field inline"><input class="min-metric center-align" type="number" placeholder="${this.minMetric}"  style="width: 4em"disabled></div> Max: <div class="input-field inline">
+                            <input class="max-metric center-align" type="number" placeholder="${this.maxMetric}" style="width: 4em" disabled></div></div></div>
+                      </div>
+                  
+            </form>
+            </div>  
+            </div>`;     
+          const mainSection = document.querySelector('.main-section');
+          mainSection.appendChild(newCard);       
+              }  
+  
+  addProcedureList() {
+    let stepId = console.log(this.id);
+    this.procedureList.forEach(function(tasks, index){
+          let ol = document.querySelector(`.enHypophosphite`);
+          const step = document.createElement('li'); 
+          step.className = "collection-item";
+          step.appendChild(document.createTextNode(tasks));
+          const checkbox = document.createElement('span');
+          checkbox.className = 'secondary-content';
+          checkbox.innerHTML = `<form><p>
+          <input type="checkbox" id="${stepId}${index}"/>
+          <label for="${stepId}${index}"></label>`;
+          step.appendChild(checkbox);
+          ol.appendChild(step);     
+          console.log(index);
+          })}
+ 
 }
-
-var enHypophosphite = new Procedure(
-        /*title*/'Electroless Nickel - Hypophosphite Analysis', 
-        /*procedure list*/ 
-        ['Pipet a 5 ml sample of the solution into a 250ml glass stoppered iodine flask', 
-        'step2', 
-        'step3'
-        ],
-        /*color1*/ 'brown', 
-        /*color 2*/'white',
-        /*inputA*/"mL Sodium Thisulfate Solution", 
-        /*inputB*/'inputb', 
-        /*inputBState*/ null, 
-        /*resultsImperial*/ 'calc 1 currently string', 
-        /* min Imperial*/ 2.5,
-        /* max Imperial*/ 3.3,
-        /*resultsMetric*/ 'calc 2 currently stringt',
-        /* min Metric*/ 19,
-        /* max Metric*/ 25);
-
-//console.log(enHypophosphite);
-
-
 // Insert card to HTML
 
 document.querySelector('.new-card-request').addEventListener('click', addNewCard);
 
 function addNewCard(e){
-const newCard = document.createElement('div');
-newCard.className = 'card larger';
-newCard.style = 'margin-top: 3em';
-newCard.innerHTML = `<div class="card-content">
-<div class="row">
-    <div class="col s10">  
-    <span class="card-title">Electroless Nickel - Nickel Metal Analysis</span>
-    </div>
-    <div class="col s2 right-align">
-      <a class="btn-floating waves-effect waves-light red remove-card"><i class="material-icons">close</i></a>
-    </div>  
-</div>    
 
-  <ol class="collection" id="procedure-list">
-    <li class="collection-item">Pippet 5ml operating solution into 250ml Erlenmeyer 
-      <span class="secondary-content">
-        <form><p>
-        <input type="checkbox" id="checkbox1"/>
-        <label for="checkbox1"></label>
-        </form></span>
-    </li>
-    <li class="collection-item">Add 10mL Ammonium Hydroxide (AG Grade)
-        <span class="secondary-content">
-            <form><p>
-            <input type="checkbox" id="checkbox2"/>
-            <label for="checkbox2"></label>
-            </form></span>
-    </li>
-    <li class="collection-item">Add a pinch Murexide to pale straw color
-        <span class="secondary-content">
-            <form><p>
-            <input type="checkbox" id="checkbox3"/>
-            <label for="checkbox3"></label>
-            </form></span>
-    </li>
-    <li class="collection-item">Titrate with 0575M EDTA to blue-purple endpoint
-        <span class="secondary-content">
-            <form><p>
-            <input type="checkbox" id="checkbox4"/>
-            <label for="checkbox4"></label>
-            </form></span>
-    </li>
-    <li class="collection-item">Record mL 0.0575M EDTA titrated as "A"
-        <span class="secondary-content">
-            <form><p>
-            <input type="checkbox" id="checkbox5"/>
-            <label for="checkbox5"></label>
-            </form></span>
-    </li>
-  </ol> 
+  const enHypophosphite = new Procedure(
+    /*ID*/'enHypophosphite',
+    /*title*/'Electroless Nickel - Hypophosphite Analysis', 
+    /*procedure list*/ 
+    ['Pipet a 5 ml sample of the solution into a 250ml glass stoppered iodine flask', 
+    'Add 25 mL of 6N HCL, using it to rinse down the neck of the flask.', 
+    'Pipet 50 mL of the 0.10N KIO3 solution into the flask. Add one gram of KI crystals.',
+    'Rinse down the neck of the flask with 3 to 5 mL of 6N HCl',
+    'Stopper the flask and set in the dark for EXACTLY 30 min',
+    'Rinse stopper and neck of flask with a small amount of deionized water',
+    'Titrate immediately with 0.1N Sodium Thiosulfate Soln. from Brown to Colorless'
+    ],
+    /*color1*/ '#604020', 
+    /*color 2*/'white',
+    /*inputA*/"mL Sodium Thisulfate Solution", 
+    /*inputB*/'Not Required', 
+    /*inputBState*/ null, 
+    /*resultsImperial*/ 'calc 1 currently string', 
+    /* min Imperial*/ 2.5,
+    /* max Imperial*/ 3.3,
+    /*resultsMetric*/ 'calc 2 currently stringt',
+    /* min Metric*/ 19,
+    /* max Metric*/ 25);  
 
-  <div class="card-content titration-color" style="background: linear-gradient(to right, orange, #2A00BB)">
-  </div>
-
-  <div class="card-content">
-  <form class="calc-form">
-    <!--INPUT 1 ENTER A-->
-    <div class="row">
-        <div class="input-field col s12 m 6 l6 input-ab">
-            <i class="prefix">A</i>
-            <input class="input-a" type="number">
-            <label for="icon_prefix">mL 0.0575M EDTA titrated</label>
-          </div>
-       <!--INPUT 2 ENTER B-->
-        <div class="input-field col s12 m6 l6 input-ab">
-              <i class="prefix">B</i>
-              <input class="input-b" type="number" disabled>
-              <label for="icon_prefix"></label>
-        </div>
-     </div>
-      <!--INPUT 2 ANSWER IMPERIAL-->
-            <div class="row answer-imperial-row">
-                <div class="col s12"> A x 0.09 = <div class="input-field inline"><input type="number" class="answer-imperial center-align" style="width: 4em" disabled></div>oz/gal of Nickel Metal.  Min: <div class="input-field inline"><input type="number" placeholder="0.7" class="min-imperial center-align" style="width: 4em"disabled></div> Max: <div class="input-field inline">
-                    <input type="number" placeholder="0.8" class="max-imperial center-align" style="width: 4em" disabled></div></div>
-              
-            </div>
-      <!--INPUT 2 ANSWER METRIC-->
-            <div class="row" class="answer-metric-row">
-                <div class="col s12">A x 0.675 = 
-                  <div class="input-field inline">
-                    
-                    <input type="number" class="center-align validate answer-metric" style="width: 4em" disabled>
-                  </div>g/L of Nickel Metal.
-                Min: <div class="input-field inline"><input class="min-metric center-align" type="number" placeholder="5.25"  style="width: 4em"disabled></div> Max: <div class="input-field inline">
-                  <input class="max-metric center-align" type="number" placeholder="6" style="width: 4em" disabled></div></div></div>
-            </div>
-        
-  </form>
-  </div>  
-  </div>`;     
-const mainSection = document.querySelector('.main-section');
-mainSection.appendChild(newCard);       
+enHypophosphite.newProcedureCard();
+enHypophosphite.addProcedureList();
+//console.log(enHypophosphite.procedureList.length);
 }
 
 //Remove card from HTML 
@@ -167,7 +163,7 @@ document.body.addEventListener('click', removeCard);
 
 function removeCard(e){
 if(e.target.parentElement.classList.contains('remove-card')){
-  console.log('199sale');
+  
   if(confirm('Current procedure will be deleted.')){
     e.target.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
   } 
@@ -181,46 +177,38 @@ document.body.addEventListener('keyup', calculateResults);
 
 function calculateResults(e){
 
-  if(e.target.classList.contains('input-a')){
-// previously listened to querySelector('.input-a')
- 
-  const valueA = parseFloat(e.target.value);
-  //const valueB = document.getElementById('input-b');
+      if(e.target.classList.contains('input-a')){
+    
+      const valueA = parseFloat(e.target.value);
+      const answerImperial = e.target.parentElement.parentElement.parentElement.children[1].children[0].children[0].children[0];
+      const minImpertial   = e.target.parentElement.parentElement.parentElement.children[1].children[0].children[1].children[0].placeholder;
+      const maxImperial    = e.target.parentElement.parentElement.parentElement.children[1].children[0].children[2].children[0].placeholder;
+      const answerMetric   = e.target.parentElement.parentElement.parentElement.children[2].children[0].children[0].children[0];
+      const minMetric      = e.target.parentElement.parentElement.parentElement.children[2].children[0].children[1].children[0].placeholder;
+      const maxMetric      = e.target.parentElement.parentElement.parentElement.children[2].children[0].children[2].children[0].placeholder;
+      
+      if(Number.isNaN(valueA)){
+      console.log('NaN'); 
+      } else {    //Calculation Imperial ****** DANGER FIX ME *******
+                  answerImperial.value = (valueA * 0.09).toFixed(2);
+                  //Validation Metric
+                  if(answerImperial.value < minImpertial || answerImperial.value > maxImperial) {
+                    answerImperial.style.color = "red";
+                  
+                  } else {
 
-  //Previously const answerImperial = document.querySelector('.answer-imperial'); which does not work on JS entered forms
-  const answerImperial = e.target.parentElement.parentElement.parentElement.children[1].children[0].children[0].children[0];
-  //Previously const answerMetric = document.querySelector('.answer-metric'); which doesn't work on a JS imputed form
-  const answerMetric = e.target.parentElement.parentElement.parentElement.children[2].children[0].children[0].children[0];
+                    answerImperial.style.color = "green";
+                    
+                  }
+                  //Calciulation Metric ****** DANGER FIX ME *******
+                  answerMetric.value = (valueA * 0.675).toFixed(2);
+                  //Validation Metric
+                  if(answerMetric.value < minMetric || answerMetric.value > maxMetric) {
 
-  //used to find the correct target.... will be updated once i find a better way...console.log(e.target.parentElement.parentElement.parentElement.children[2].children[0].children[0].children[0]);
-
-  if(Number.isNaN(valueA)){
- console.log('NaN');
-  } else {
-                //console.log(valueA);
-              answerImperial.value = (valueA * 0.09).toFixed(2);
-              if(answerImperial.value < 0.7 || answerImperial.value > 0.8) {
-                answerImperial.style.color = "red";
-                //console.log(`${answerImperial.value}oz/gal is OUT of range`);
-              } else {
-                answerImperial.style.color = "green";
-                //console.log(`${answerImperial.value}oz/gal is IN of range`);
-              }
-
-              answerMetric.value = (valueA * 0.675).toFixed(2);
-              if(answerMetric.value < 5.25 || answerMetric.value > 6) {
-                answerMetric.style.color = "red";
-                //console.log(`${answerMetric.value}g/L is OUT of range`);
-              } else {
-                answerMetric.style.color = "green";
-                //console.log(`${answerMetric.value}g/L is IN of range`);
-              } 
-  } 
+                    answerMetric.style.color = "red";
+                  } else {
+                    answerMetric.style.color = "green";
+                  } 
+      } 
+    }
 }
-}
-// document.querySelector('body').addEventListener('click', runTest)
-// function runTest(e){
-// console.log('start test');
-
-// console.log('end test');
-// }
