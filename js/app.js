@@ -105,7 +105,7 @@ class Procedure {
               }  
   
   addProcedureList() {
-    let stepId = console.log(this.id);
+    let stepId = this.id;
     this.procedureList.forEach(function(tasks, index){
           let ol = document.querySelector(`.enHypophosphite`);
           const step = document.createElement('li'); 
@@ -118,7 +118,6 @@ class Procedure {
           <label for="${stepId}${index}"></label>`;
           step.appendChild(checkbox);
           ol.appendChild(step);     
-          console.log(index);
           })}
  
 }
@@ -127,8 +126,9 @@ class Procedure {
 document.querySelector('.new-card-request').addEventListener('click', addNewCard);
 
 function addNewCard(e){
-
-  const enHypophosphite = new Procedure(
+  console.log(e.target.parentElement.id);
+  let targetID = e.target.parentElement.id;
+  const targetID = new Procedure(
     /*ID*/'enHypophosphite',
     /*title*/'Electroless Nickel - Hypophosphite Analysis', 
     /*procedure list*/ 
