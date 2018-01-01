@@ -20,7 +20,8 @@ Steps taken:
 
 Short Term Goals:
 1. ~~Add New card inserting Object parameters~~
-2. Fix Check boxes that are using IDs
+2. ~~Fix Check boxes that are using IDs~~
+3. Apply new calculations to new cards
 
 Long Term Goals:
 1. Add Objects to database
