@@ -41,8 +41,7 @@ class Procedure {
         this.minMetric = minMetric;
         this.maxMetric = maxMetric;
       }
-    
-       
+     
     newProcedureCard(){
 
           const newCard = document.createElement('div');
@@ -118,8 +117,8 @@ class Procedure {
           ol.appendChild(step);     
           })}
 
-  performCalc() {
-    console.log('add calc here');
+  static performCalc(e) {
+    console.log('calculation');
   }        
  
 }
@@ -219,9 +218,8 @@ function calculateResults(e){
           console.log('NaN'); 
           } else {    //Calculation Imperial ****** DANGER FIX ME *******
                       answerImperial.value = (valueA * 0.09).toFixed(2);
-                      // DELETE ME - enHypophosphite displays so pull 
-                      console.log(e.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement);
-                      enHypophosphite.performCalc()
+                      
+                      Procedure.performCalc()
                       //Validation Metric
                       if(answerImperial.value < minImpertial || answerImperial.value > maxImperial) {
                         answerImperial.style.color = "red";
