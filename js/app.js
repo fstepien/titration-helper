@@ -12,20 +12,22 @@ function loginClick(){
   Materialize.toast('Login is currently not available', 4000)
 }
  
-// Floating Add - Currently Not Available
+// Floating Add - #add-form-launch hidden in HTML
 
-document.querySelector('#add-form-launch').addEventListener('click', launchAddForm);
+// document.querySelector('#add-form-launch').addEventListener('click', launchAddForm);
 
-function launchAddForm(e){
-  Materialize.toast('Adding custom procedures currently not available', 4000)
+// function launchAddForm(e){
+//   Materialize.toast('Adding custom procedures currently not available', 4000)
   
-}
+// }
 //End of Materialize jQuery
 
 //List of Procedures - Eventually this will be stored in a database
 
+let count = 1;
+
 class Procedure { 
-    constructor(id, title ,procedureList,color1,color2,inputA,inputB,inputBState,resultsImperial,minImpertial, maxImperial, resultsMetric, minMetric, maxMetric){
+    constructor(id, title ,procedureList,color1,color2,inputA,inputB,inputBState,factorImperial, textImperial1, textImperial2, minImpertial, maxImperial, factorMetric, textMetric1, textMetric2, minMetric, maxMetric){
         this.id = id;
         this.name = title;
         this.procedureList = procedureList;
@@ -34,10 +36,14 @@ class Procedure {
         this.inputA = inputA;
         this.inputB = inputB;
         this.inputBState = inputBState;
-        this.resultsImperial = resultsImperial;
+        this.factorImperial = factorImperial;
+        this.textImperial1 = textImperial1;
+        this.textImperial2 = textImperial2;
         this.minImpertial = minImpertial;
         this.maxImperial = maxImperial;
-        this.resultsMetric = resultsMetric;
+        this.factorMetric = factorMetric;
+        this.textMetric1 = textMetric1;
+        this.textMetric2 = textMetric2;
         this.minMetric = minMetric;
         this.maxMetric = maxMetric;
       }
@@ -57,7 +63,7 @@ class Procedure {
                 <a class="btn-floating waves-effect waves-light red remove-card"><i class="material-icons">close</i></a>
               </div>  
           </div>    
-            <ol class="collection ${this.id}">
+            <ol class="collection ${this.id}-${count}">
             </ol> 
             <div class="card-content titration-color" style="background: linear-gradient(to right, ${this.color1}, ${this.color2})">
                         </div>
@@ -79,17 +85,17 @@ class Procedure {
               </div>
                 <!--INPUT 2 ANSWER IMPERIAL-->
                       <div class="row answer-imperial-row">
-                          <div class="col s12"> A x 0.09 = <div class="input-field inline"><input type="number" class="answer-imperial center-align" style="width: 4em" disabled></div>oz/gal of Nickel Metal.  Min: <div class="input-field inline"><input type="number" placeholder="${this.minImpertial}" class="min-imperial center-align" style="width: 4em"disabled></div> Max: <div class="input-field inline">
+                          <div class="col s12">${this.textImperial1}<div class="input-field inline"><input type="number" class="answer-imperial center-align" style="width: 4em" disabled></div>${this.textImperial2}.  Min: <div class="input-field inline"><input type="number" placeholder="${this.minImpertial}" class="min-imperial center-align" style="width: 4em"disabled></div> Max: <div class="input-field inline">
                               <input type="number" placeholder="${this.maxImperial}" class="max-imperial center-align" style="width: 4em" disabled></div></div>
                         
                       </div>
                 <!--INPUT 2 ANSWER METRIC-->
                       <div class="row" class="answer-metric-row">
-                          <div class="col s12">A x 0.675 = 
+                          <div class="col s12">${this.textMetric1} 
                             <div class="input-field inline">
                               
                               <input type="number" class="center-align validate answer-metric" style="width: 4em" disabled>
-                            </div>g/L of Nickel Metal.
+                            </div>${this.textMetric2}.
                           Min: <div class="input-field inline"><input class="min-metric center-align" type="number" placeholder="${this.minMetric}"  style="width: 4em"disabled></div> Max: <div class="input-field inline">
                             <input class="max-metric center-align" type="number" placeholder="${this.maxMetric}" style="width: 4em" disabled></div></div></div>
                       </div>
@@ -104,7 +110,7 @@ class Procedure {
   addProcedureList() {
     let stepId = this.id;
     this.procedureList.forEach(function(tasks, index){
-          let ol = document.querySelector(`ol.${stepId}`);
+          let ol = document.querySelector(`ol.${stepId}-${count}`);
           const step = document.createElement('li'); 
           step.className = "collection-item";
           step.appendChild(document.createTextNode(tasks));
@@ -116,12 +122,17 @@ class Procedure {
           step.appendChild(checkbox);
           ol.appendChild(step);     
           })}
-
-  static performCalc(e) {
-    console.log('calculation');
-  }        
+          
+    static addCount() {
+      count += 1;
+    }      
+  // static performCalc(procedureCalcId, valueA) {
+  //   console.log(procedureCalcId, valueA);
+    
+//   }        
  
 }
+
 
 //Global Variable - to be pulled from DB in the future
 const enHypophosphite = new Procedure(
@@ -141,10 +152,14 @@ const enHypophosphite = new Procedure(
   /*inputA*/"mL Sodium Thisulfate Solution", 
   /*inputB*/'Not Required', 
   /*inputBState*/ null, 
-  /*resultsImperial*/ 'calc 1 currently string', 
+  /*factorImperial*/ 1.41, 
+  /*textImperial1*/ '1.41 x [(mL KIO3 x Normality KIO3) - (A x Normality Sodium Thiosulfate)] =',
+  /*textImperial2*/ 'oz/gal of Sodium Hypophoshite',
   /* min Imperial*/ 2.5,
   /* max Imperial*/ 3.3,
-  /*resultsMetric*/ 'calc 2 currently stringt',
+  /*factorMetric*/ 10.6,
+  /*textMetric1*/ '10.60 x [(mL KIO3 x Normality KIO3) - (A x Normality Sodium Thiosulfate)] =',
+  /*textMetric2*/ 'g/L of Sodium Hypophosphite',
   /* min Metric*/ 19,
   /* max Metric*/ 25);  
 
@@ -163,25 +178,30 @@ const enHypophosphite = new Procedure(
     /*inputA*/"mL 0.0575M EDTA titrated", 
     /*inputB*/'Not Required', 
     /*inputBState*/ null, 
-    /*resultsImperial*/ 'calc 1 currently string', 
+    /*factorImperial*/ 0.09,
+    /*textImperial1*/ 'A x 0.09 =',
+    /*textImperial2*/ 'oz/gal of Nickel Metal',
     /* min Imperial*/ 0.7,
     /* max Imperial*/ 0.8,
-    /*resultsMetric*/ 'calc 2 currently stringt',
+    /*factorMetric*/ 0.675,
+    /*textMetric1*/ 'A x 0.675 =',
+    /*textMetric2*/ 'g/L of Nickel Metal',
     /* min Metric*/ 5.25,
     /* max Metric*/ 6);  
 
 // Insert card to HTML
-
 document.body.addEventListener('click', addNewCard);
 
 function addNewCard(e){
   if(e.target.parentElement.classList.contains('enHypophosphite')){
     enHypophosphite.newProcedureCard();
     enHypophosphite.addProcedureList();
+    Procedure.addCount(); 
   }
   if(e.target.parentElement.classList.contains('enNickel')){
       enNickel.newProcedureCard();
       enNickel.addProcedureList();
+      Procedure.addCount(); 
     }
 }
 
@@ -215,25 +235,29 @@ function calculateResults(e){
       const maxMetric      = e.target.parentElement.parentElement.parentElement.children[2].children[0].children[2].children[0].placeholder;
       
           if(Number.isNaN(valueA)){
-          console.log('NaN'); 
-          } else {    //Calculation Imperial ****** DANGER FIX ME *******
-                      answerImperial.value = (valueA * 0.09).toFixed(2);
+          answerImperial.value = '';
+          answerMetric.value = ''; 
+          } else {    //Calculation Imperial 
+
+                      eventId = e.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.id.slice(0, -5);
+                      switch(eventId){
+                        case enNickel.id:
+                        answerImperial.value = (valueA * enNickel.factorImperial).toFixed(2);  
+                        answerMetric.value = (valueA * enNickel.factorMetric).toFixed(2);
+                        break;
+                        case enHypophosphite.id:
+                        answerImperial.value = ((5 - (valueA * 0.1)) * enHypophosphite.factorImperial).toFixed(2); 
+                        answerMetric.value = ((5 - (valueA * 0.1)) * enHypophosphite.factorMetric).toFixed(2);
+                        break;
+                      }
                       
-                      Procedure.performCalc()
-                      //Validation Metric
+                      //Validation
                       if(answerImperial.value < minImpertial || answerImperial.value > maxImperial) {
                         answerImperial.style.color = "red";
-                      
                       } else {
-
                         answerImperial.style.color = "green";
-                        
                       }
-                      //Calciulation Metric ****** DANGER FIX ME *******
-                      answerMetric.value = (valueA * 0.675).toFixed(2);
-                      //Validation Metric
                       if(answerMetric.value < minMetric || answerMetric.value > maxMetric) {
-
                         answerMetric.style.color = "red";
                       } else {
                         answerMetric.style.color = "green";

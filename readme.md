@@ -17,6 +17,8 @@ Steps taken:
 5. Realize the JS functions created do not work on the second card
 6. Add event delegation to functions and the card works
 7. Change card addition performed through an event listener function to a class call. Class contains a procedures constructor, method to create the card and a method to generate procedure steps as li elements.
+8. Used switch in event listener to change formulas. 
+9. Noticed that if a second card with the same procedure was added all of the steps would go to the first card. Created a counter to vary list id based on procedure name and count
 
 Short Term Goals:
 1. ~~Add New card inserting Object parameters~~
