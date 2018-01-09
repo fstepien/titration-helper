@@ -79,7 +79,7 @@ class Procedure {
                 <!--INPUT 2 ENTER B-->
                   <div class="input-field col s12 m6 l6 input-ab">
                         <i class="prefix">B</i>
-                        <input class="input-b" type="number" disabled>
+                        <input class="input-b" type="number" ${this.inputBState}>
                         <label for="icon_prefix">${this.inputB}</label>
                   </div>
               </div>
@@ -133,6 +133,93 @@ class Procedure {
  
 }
 
+// Insert card to HTML
+document.body.addEventListener('click', addNewCard);
+
+function addNewCard(e){
+  if(e.target.parentElement.classList.contains('enHypophosphite')){
+    enHypophosphite.newProcedureCard();
+    enHypophosphite.addProcedureList();
+    Procedure.addCount(); 
+  }
+  if(e.target.parentElement.classList.contains('enNickel')){
+      enNickel.newProcedureCard();
+      enNickel.addProcedureList();
+      Procedure.addCount(); 
+    }
+  if(e.target.parentElement.classList.contains('crChromicAcid')){
+      crChromicAcid.newProcedureCard();
+      crChromicAcid.addProcedureList();
+      Procedure.addCount(); 
+    }  
+}
+
+//Remove card from HTML 
+
+document.body.addEventListener('click', removeCard);
+
+function removeCard(e){
+if(e.target.parentElement.classList.contains('remove-card')){
+  
+  if(confirm('Current procedure will be deleted.')){
+    e.target.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
+  } 
+}
+}
+
+//Titration Application Calculation
+
+document.body.addEventListener('keyup', calculateResults);
+
+function calculateResults(e){
+
+      if(e.target.classList.contains('input-a')){
+        
+      const valueA = parseFloat(e.target.value);
+      //const valueB = parseFloat(e.target.parentElement.parentElement.children[1].children[1].value);
+      const answerImperial = e.target.parentElement.parentElement.parentElement.children[1].children[0].children[0].children[0];
+      const minImpertial   = parseFloat(e.target.parentElement.parentElement.parentElement.children[1].children[0].children[1].children[0].placeholder);
+      const maxImperial    = parseFloat(e.target.parentElement.parentElement.parentElement.children[1].children[0].children[2].children[0].placeholder);
+      const answerMetric   = e.target.parentElement.parentElement.parentElement.children[2].children[0].children[0].children[0];
+      const minMetric      = parseFloat(e.target.parentElement.parentElement.parentElement.children[2].children[0].children[1].children[0].placeholder);
+      const maxMetric      = parseFloat(e.target.parentElement.parentElement.parentElement.children[2].children[0].children[2].children[0].placeholder);
+      
+          if(Number.isNaN(valueA)){
+          answerImperial.value = '';
+          answerMetric.value = ''; 
+          } else {    //Calculation Imperial 
+
+                      eventId = e.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.id.slice(0, -5);
+                      switch(eventId){
+                        case enNickel.id:
+                              answerImperial.value = (valueA * enNickel.factorImperial).toFixed(2);  
+                              answerMetric.value = (valueA * enNickel.factorMetric).toFixed(2);
+                              break;
+                        case enHypophosphite.id:
+                              answerImperial.value = ((5 - (valueA * 0.1)) * enHypophosphite.factorImperial).toFixed(2); 
+                              answerMetric.value = ((5 - (valueA * 0.1)) * enHypophosphite.factorMetric).toFixed(2);
+                              break;
+                        case crChromicAcid.id:
+                              answerImperial.value = (valueA * crChromicAcid.factorImperial).toFixed(2);  
+                              answerMetric.value = (valueA * crChromicAcid.factorMetric).toFixed(2);
+                        break;
+                        break;
+                      }
+                      
+                      //Validation
+                      if(answerImperial.value < minImpertial || answerImperial.value > maxImperial) {
+                        answerImperial.style.color = "red";
+                      } else {
+                        answerImperial.style.color = "green";
+                      }
+                      if(answerMetric.value < minMetric || answerMetric.value > maxMetric) {
+                        answerMetric.style.color = "red";
+                      } else {
+                        answerMetric.style.color = "green";
+                      }
+          } 
+    }
+}
 
 //Global Variable - to be pulled from DB in the future
 const enHypophosphite = new Procedure(
@@ -151,7 +238,7 @@ const enHypophosphite = new Procedure(
   /*color 2*/'white',
   /*inputA*/"mL Sodium Thisulfate Solution", 
   /*inputB*/'Not Required', 
-  /*inputBState*/ null, 
+  /*inputBState*/ "disabled", 
   /*factorImperial*/ 1.41, 
   /*textImperial1*/ '1.41 x [(mL KIO3 x Normality KIO3) - (A x Normality Sodium Thiosulfate)] =',
   /*textImperial2*/ 'oz/gal of Sodium Hypophoshite',
@@ -177,7 +264,7 @@ const enHypophosphite = new Procedure(
     /*color 2*/'#2A00BB',
     /*inputA*/"mL 0.0575M EDTA titrated", 
     /*inputB*/'Not Required', 
-    /*inputBState*/ null, 
+    /*inputBState*/ "disabled", 
     /*factorImperial*/ 0.09,
     /*textImperial1*/ 'A x 0.09 =',
     /*textImperial2*/ 'oz/gal of Nickel Metal',
@@ -189,79 +276,34 @@ const enHypophosphite = new Procedure(
     /* min Metric*/ 5.25,
     /* max Metric*/ 6);  
 
-// Insert card to HTML
-document.body.addEventListener('click', addNewCard);
 
-function addNewCard(e){
-  if(e.target.parentElement.classList.contains('enHypophosphite')){
-    enHypophosphite.newProcedureCard();
-    enHypophosphite.addProcedureList();
-    Procedure.addCount(); 
-  }
-  if(e.target.parentElement.classList.contains('enNickel')){
-      enNickel.newProcedureCard();
-      enNickel.addProcedureList();
-      Procedure.addCount(); 
-    }
-}
-
-//Remove card from HTML 
-
-document.body.addEventListener('click', removeCard);
-
-function removeCard(e){
-if(e.target.parentElement.classList.contains('remove-card')){
-  
-  if(confirm('Current procedure will be deleted.')){
-    e.target.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
-  } 
-}
-}
-
-//Titration Application Calculation
-
-document.body.addEventListener('keyup', calculateResults);
-
-function calculateResults(e){
-
-      if(e.target.classList.contains('input-a')){
-    
-      const valueA = parseFloat(e.target.value);
-      const answerImperial = e.target.parentElement.parentElement.parentElement.children[1].children[0].children[0].children[0];
-      const minImpertial   = e.target.parentElement.parentElement.parentElement.children[1].children[0].children[1].children[0].placeholder;
-      const maxImperial    = e.target.parentElement.parentElement.parentElement.children[1].children[0].children[2].children[0].placeholder;
-      const answerMetric   = e.target.parentElement.parentElement.parentElement.children[2].children[0].children[0].children[0];
-      const minMetric      = e.target.parentElement.parentElement.parentElement.children[2].children[0].children[1].children[0].placeholder;
-      const maxMetric      = e.target.parentElement.parentElement.parentElement.children[2].children[0].children[2].children[0].placeholder;
-      
-          if(Number.isNaN(valueA)){
-          answerImperial.value = '';
-          answerMetric.value = ''; 
-          } else {    //Calculation Imperial 
-
-                      eventId = e.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.id.slice(0, -5);
-                      switch(eventId){
-                        case enNickel.id:
-                        answerImperial.value = (valueA * enNickel.factorImperial).toFixed(2);  
-                        answerMetric.value = (valueA * enNickel.factorMetric).toFixed(2);
-                        break;
-                        case enHypophosphite.id:
-                        answerImperial.value = ((5 - (valueA * 0.1)) * enHypophosphite.factorImperial).toFixed(2); 
-                        answerMetric.value = ((5 - (valueA * 0.1)) * enHypophosphite.factorMetric).toFixed(2);
-                        break;
-                      }
-                      
-                      //Validation
-                      if(answerImperial.value < minImpertial || answerImperial.value > maxImperial) {
-                        answerImperial.style.color = "red";
-                      } else {
-                        answerImperial.style.color = "green";
-                      }
-                      if(answerMetric.value < minMetric || answerMetric.value > maxMetric) {
-                        answerMetric.style.color = "red";
-                      } else {
-                        answerMetric.style.color = "green";
-                      } 
-          } 
-    }
-}
+const crChromicAcid = new Procedure(
+  /*ID*/'crChromicAcid',
+  /*title*/'Hexavalent Chome - Chromic Acid', 
+  /*procedure list*/ 
+  [
+    'Pipette 1 mL sample of chromium plating solution into a 100mL Vlumentric Flask. DIlute to the mark with DI water.',
+    'Pippet a 20 mL aliquote into a 250 mL Erlenmeyer flask',
+    'Add aproximately 100mL DI Water',
+    'Add 1 mL x 15g/L Ammonium Bifluoride solution',
+    'Add 10mL x Potassium Iodide solution',
+    'Immediately titrate with 0.1 N Sodium Thiosulfate solution from a red colour to a plae straw color',
+    'Add 5mL start solution,',
+    'Continue titration until the blue color disappears',
+    'Measure mL titrated as A'
+  ],
+  /*color1*/ '#663333', 
+  /*color 2*/'white',
+  /*inputA*/"mL Sodium Thisulfate Solution", 
+  /*inputB*/'Not Required', 
+  /*inputBState*/ "disabled", 
+  /*factorImperial*/ 2.234, 
+  /*textImperial1*/ 'A x 2.234 =',
+  /*textImperial2*/ 'oz/gal of Chromic Acid',
+  /* min Imperial*/ 20,
+  /* max Imperial*/ 50,
+  /*factorMetric*/ 16.75,
+  /*textMetric1*/ 'A x 16.75 =',
+  /*textMetric2*/ 'g/L of Chromic Acid',
+  /* min Metric*/ 150,
+  /* max Metric*/ 375);
