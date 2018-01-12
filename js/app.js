@@ -2,23 +2,25 @@
 $( document ).ready(function(){
   $(".dropdown-button").dropdown();
   $(".button-collapse").sideNav();
-  
+
 })
 
-// Login - Currently Not Available 
-document.querySelector('.login-na').addEventListener('click', loginClick);
+// Login - Currently Not Available
+document.body.addEventListener('click', loginClick);
 
-function loginClick(){
+function loginClick(e){
+  if(e.target.classList.contains('login-na')){
   Materialize.toast('Login is currently not available', 4000)
 }
- 
+}
+
 // Floating Add - #add-form-launch hidden in HTML
 
 // document.querySelector('#add-form-launch').addEventListener('click', launchAddForm);
 
 // function launchAddForm(e){
 //   Materialize.toast('Adding custom procedures currently not available', 4000)
-  
+
 // }
 //End of Materialize jQuery
 
@@ -26,7 +28,7 @@ function loginClick(){
 
 let count = 1;
 
-class Procedure { 
+class Procedure {
     constructor(id, title ,procedureList,color1,color2,inputA,inputB,inputBState,factorImperial, textImperial1, textImperial2, minImpertial, maxImperial, factorMetric, textMetric1, textMetric2, minMetric, maxMetric){
         this.id = id;
         this.name = title;
@@ -47,7 +49,7 @@ class Procedure {
         this.minMetric = minMetric;
         this.maxMetric = maxMetric;
       }
-     
+
     newProcedureCard(){
 
           const newCard = document.createElement('div');
@@ -56,15 +58,15 @@ class Procedure {
           newCard.style = 'margin-top: 3em';
           newCard.innerHTML = `<div class="card-content">
           <div class="row">
-              <div class="col s10">  
+              <div class="col s10">
               <span class="card-title">${this.name}</span>
               </div>
               <div class="col s2 right-align">
                 <a class="btn-floating waves-effect waves-light red remove-card"><i class="material-icons">close</i></a>
-              </div>  
-          </div>    
+              </div>
+          </div>
             <ol class="collection ${this.id}-${count}">
-            </ol> 
+            </ol>
             <div class="card-content titration-color" style="background: linear-gradient(to right, ${this.color1}, ${this.color2})">
                         </div>
             <div class="card-content">
@@ -87,31 +89,31 @@ class Procedure {
                       <div class="row answer-imperial-row">
                           <div class="col s12">${this.textImperial1}<div class="input-field inline"><input type="number" class="answer-imperial center-align" style="width: 4em" disabled></div>${this.textImperial2}.  Min: <div class="input-field inline"><input type="number" placeholder="${this.minImpertial}" class="min-imperial center-align" style="width: 4em"disabled></div> Max: <div class="input-field inline">
                               <input type="number" placeholder="${this.maxImperial}" class="max-imperial center-align" style="width: 4em" disabled></div></div>
-                        
+
                       </div>
                 <!--INPUT 2 ANSWER METRIC-->
                       <div class="row" class="answer-metric-row">
-                          <div class="col s12">${this.textMetric1} 
+                          <div class="col s12">${this.textMetric1}
                             <div class="input-field inline">
-                              
+
                               <input type="number" class="center-align validate answer-metric" style="width: 4em" disabled>
                             </div>${this.textMetric2}.
                           Min: <div class="input-field inline"><input class="min-metric center-align" type="number" placeholder="${this.minMetric}"  style="width: 4em"disabled></div> Max: <div class="input-field inline">
                             <input class="max-metric center-align" type="number" placeholder="${this.maxMetric}" style="width: 4em" disabled></div></div></div>
                       </div>
-                  
+
             </form>
-            </div>  
-            </div>`;     
+            </div>
+            </div>`;
           const mainSection = document.querySelector('.main-section');
-          mainSection.appendChild(newCard);       
-              }  
-  
+          mainSection.appendChild(newCard);
+              }
+
   addProcedureList() {
     let stepId = this.id;
     this.procedureList.forEach(function(tasks, index){
           let ol = document.querySelector(`ol.${stepId}-${count}`);
-          const step = document.createElement('li'); 
+          const step = document.createElement('li');
           step.className = "collection-item";
           step.appendChild(document.createTextNode(tasks));
           const checkbox = document.createElement('span');
@@ -120,17 +122,17 @@ class Procedure {
           <input type="checkbox" id="${stepId}${index}"/>
           <label for="${stepId}${index}"></label>`;
           step.appendChild(checkbox);
-          ol.appendChild(step);     
+          ol.appendChild(step);
           })}
-          
+
     static addCount() {
       count += 1;
-    }      
+    }
   // static performCalc(procedureCalcId, valueA) {
   //   console.log(procedureCalcId, valueA);
-    
-//   }        
- 
+
+//   }
+
 }
 
 // Insert card to HTML
@@ -140,30 +142,30 @@ function addNewCard(e){
   if(e.target.parentElement.classList.contains('enHypophosphite')){
     enHypophosphite.newProcedureCard();
     enHypophosphite.addProcedureList();
-    Procedure.addCount(); 
+    Procedure.addCount();
   }
   if(e.target.parentElement.classList.contains('enNickel')){
       enNickel.newProcedureCard();
       enNickel.addProcedureList();
-      Procedure.addCount(); 
+      Procedure.addCount();
     }
   if(e.target.parentElement.classList.contains('crChromicAcid')){
       crChromicAcid.newProcedureCard();
       crChromicAcid.addProcedureList();
-      Procedure.addCount(); 
-    }  
+      Procedure.addCount();
+    }
 }
 
-//Remove card from HTML 
+//Remove card from HTML
 
 document.body.addEventListener('click', removeCard);
 
 function removeCard(e){
 if(e.target.parentElement.classList.contains('remove-card')){
-  
+
   if(confirm('Current procedure will be deleted.')){
     e.target.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
-  } 
+  }
 }
 }
 
@@ -174,7 +176,7 @@ document.body.addEventListener('keyup', calculateResults);
 function calculateResults(e){
 
       if(e.target.classList.contains('input-a')){
-        
+
       const valueA = parseFloat(e.target.value);
       //const valueB = parseFloat(e.target.parentElement.parentElement.children[1].children[1].value);
       const answerImperial = e.target.parentElement.parentElement.parentElement.children[1].children[0].children[0].children[0];
@@ -183,29 +185,29 @@ function calculateResults(e){
       const answerMetric   = e.target.parentElement.parentElement.parentElement.children[2].children[0].children[0].children[0];
       const minMetric      = parseFloat(e.target.parentElement.parentElement.parentElement.children[2].children[0].children[1].children[0].placeholder);
       const maxMetric      = parseFloat(e.target.parentElement.parentElement.parentElement.children[2].children[0].children[2].children[0].placeholder);
-      
+
           if(Number.isNaN(valueA)){
           answerImperial.value = '';
-          answerMetric.value = ''; 
-          } else {    //Calculation Imperial 
+          answerMetric.value = '';
+          } else {    //Calculation Imperial
 
                       eventId = e.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.id.slice(0, -5);
                       switch(eventId){
                         case enNickel.id:
-                              answerImperial.value = (valueA * enNickel.factorImperial).toFixed(2);  
+                              answerImperial.value = (valueA * enNickel.factorImperial).toFixed(2);
                               answerMetric.value = (valueA * enNickel.factorMetric).toFixed(2);
                               break;
                         case enHypophosphite.id:
-                              answerImperial.value = ((5 - (valueA * 0.1)) * enHypophosphite.factorImperial).toFixed(2); 
+                              answerImperial.value = ((5 - (valueA * 0.1)) * enHypophosphite.factorImperial).toFixed(2);
                               answerMetric.value = ((5 - (valueA * 0.1)) * enHypophosphite.factorMetric).toFixed(2);
                               break;
                         case crChromicAcid.id:
-                              answerImperial.value = (valueA * crChromicAcid.factorImperial).toFixed(2);  
+                              answerImperial.value = (valueA * crChromicAcid.factorImperial).toFixed(2);
                               answerMetric.value = (valueA * crChromicAcid.factorMetric).toFixed(2);
                         break;
                         break;
                       }
-                      
+
                       //Validation
                       if(answerImperial.value < minImpertial || answerImperial.value > maxImperial) {
                         answerImperial.style.color = "red";
@@ -217,29 +219,29 @@ function calculateResults(e){
                       } else {
                         answerMetric.style.color = "green";
                       }
-          } 
+          }
     }
 }
 
 //Global Variable - to be pulled from DB in the future
 const enHypophosphite = new Procedure(
   /*ID*/'enHypophosphite',
-  /*title*/'Electroless Nickel - Hypophosphite Analysis', 
-  /*procedure list*/ 
-  ['Pipet a 5 ml sample of the solution into a 250ml glass stoppered iodine flask', 
-  'Add 25 mL of 6N HCL, using it to rinse down the neck of the flask.', 
+  /*title*/'Electroless Nickel - Hypophosphite Analysis',
+  /*procedure list*/
+  ['Pipet a 5 ml sample of the solution into a 250ml glass stoppered iodine flask',
+  'Add 25 mL of 6N HCL, using it to rinse down the neck of the flask.',
   'Pipet 50 mL of the 0.10N KIO3 solution into the flask. Add one gram of KI crystals.',
   'Rinse down the neck of the flask with 3 to 5 mL of 6N HCl',
   'Stopper the flask and set in the dark for EXACTLY 30 min',
   'Rinse stopper and neck of flask with a small amount of deionized water',
   'Titrate immediately with 0.1N Sodium Thiosulfate Soln. from Brown to Colorless'
   ],
-  /*color1*/ '#604020', 
+  /*color1*/ '#604020',
   /*color 2*/'white',
-  /*inputA*/"mL Sodium Thisulfate Solution", 
-  /*inputB*/'Not Required', 
-  /*inputBState*/ "disabled", 
-  /*factorImperial*/ 1.41, 
+  /*inputA*/"mL Sodium Thisulfate Solution",
+  /*inputB*/'Not Required',
+  /*inputBState*/ "disabled",
+  /*factorImperial*/ 1.41,
   /*textImperial1*/ '1.41 x [(mL KIO3 x Normality KIO3) - (A x Normality Sodium Thiosulfate)] =',
   /*textImperial2*/ 'oz/gal of Sodium Hypophoshite',
   /* min Imperial*/ 2.5,
@@ -248,23 +250,23 @@ const enHypophosphite = new Procedure(
   /*textMetric1*/ '10.60 x [(mL KIO3 x Normality KIO3) - (A x Normality Sodium Thiosulfate)] =',
   /*textMetric2*/ 'g/L of Sodium Hypophosphite',
   /* min Metric*/ 19,
-  /* max Metric*/ 25);  
+  /* max Metric*/ 25);
 
   const enNickel = new Procedure(
     /*ID*/'enNickel',
-    /*title*/'Electroless Nickel - Metal Analysis', 
-    /*procedure list*/ 
+    /*title*/'Electroless Nickel - Metal Analysis',
+    /*procedure list*/
     ['Pippet 5ml operating solution into 250ml Erlenmeyer',
     'Add 10mL Ammonium Hydroxide (AG Grade)',
     'Add a pinch Murexide to pale straw color',
     'Titrate with 0575M EDTA to blue-purple endpoint',
     'Record mL 0.0575M EDTA titrated as "A"'
     ],
-    /*color1*/ 'orange', 
+    /*color1*/ 'orange',
     /*color 2*/'#2A00BB',
-    /*inputA*/"mL 0.0575M EDTA titrated", 
-    /*inputB*/'Not Required', 
-    /*inputBState*/ "disabled", 
+    /*inputA*/"mL 0.0575M EDTA titrated",
+    /*inputB*/'Not Required',
+    /*inputBState*/ "disabled",
     /*factorImperial*/ 0.09,
     /*textImperial1*/ 'A x 0.09 =',
     /*textImperial2*/ 'oz/gal of Nickel Metal',
@@ -274,13 +276,13 @@ const enHypophosphite = new Procedure(
     /*textMetric1*/ 'A x 0.675 =',
     /*textMetric2*/ 'g/L of Nickel Metal',
     /* min Metric*/ 5.25,
-    /* max Metric*/ 6);  
+    /* max Metric*/ 6);
 
 
 const crChromicAcid = new Procedure(
   /*ID*/'crChromicAcid',
-  /*title*/'Hexavalent Chome - Chromic Acid', 
-  /*procedure list*/ 
+  /*title*/'Hexavalent Chome - Chromic Acid',
+  /*procedure list*/
   [
     'Pipette 1 mL sample of chromium plating solution into a 100mL Vlumentric Flask. DIlute to the mark with DI water.',
     'Pippet a 20 mL aliquote into a 250 mL Erlenmeyer flask',
@@ -292,12 +294,12 @@ const crChromicAcid = new Procedure(
     'Continue titration until the blue color disappears',
     'Measure mL titrated as A'
   ],
-  /*color1*/ '#663333', 
+  /*color1*/ '#663333',
   /*color 2*/'white',
-  /*inputA*/"mL Sodium Thisulfate Solution", 
-  /*inputB*/'Not Required', 
-  /*inputBState*/ "disabled", 
-  /*factorImperial*/ 2.234, 
+  /*inputA*/"mL Sodium Thisulfate Solution",
+  /*inputB*/'Not Required',
+  /*inputBState*/ "disabled",
+  /*factorImperial*/ 2.234,
   /*textImperial1*/ 'A x 2.234 =',
   /*textImperial2*/ 'oz/gal of Chromic Acid',
   /* min Imperial*/ 20,
