@@ -3,6 +3,8 @@ Titration App
 
 Live site available at [titrationhelper.ca](http://titrationhelper.ca)
 
+![](http://titrationhelper.ca/assets/screenshot.jpg)
+
 * HTML/CSS
 * MATERIALIZE
 * JAVASCRIPT
